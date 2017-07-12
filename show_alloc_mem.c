@@ -1,0 +1,74 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   show_alloc_mem.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bfrochot <bfrochot@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/06/09 13:05:21 by bfrochot          #+#    #+#             */
+/*   Updated: 2017/06/09 17:02:10 by bfrochot         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "malloc.h"
+
+void	print_adress(long addr, int i)
+{
+	int u;
+
+	if (i == 0)
+		write(1, "0x", 2);
+	if (addr >= 16)
+		print_adress(addr / 16, 1);
+	u = addr % 16;
+	if (u >= 10)
+		ft_putchar(u - 10 + 'a');
+	else
+		ft_putchar(u + '0');
+}
+
+int		print_block(t_link *node)
+{
+	int i;
+	int total;
+
+	total = 0;
+	while (node->next != NULL)
+	{
+		node = node->next;
+		print_adress((long)node + 1, 0);
+		write(1, " - ", 3);
+		print_adress((long)node->end, 0);
+		i = (char *)node->end - (char *)node - sizeof(t_link);
+		write(1, " : ", 3);
+		ft_putnbr(i);
+		ft_putstr(" octets\n");
+		total += i;
+	}
+	return (total);
+}
+
+void	print_name(char *str, t_link *node)
+{
+	ft_putstr(str);
+	print_adress((long)node, 0);
+	ft_putchar('\n');
+}
+
+void	show_alloc_mem(void)
+{
+	int total;
+
+	if (!g_truc)
+		return ;
+	total = 0;
+	print_name("TINY : ", g_truc->tiny);
+	total += print_block(g_truc->tiny);
+	print_name("SMALL : ", g_truc->small);
+	total += print_block(g_truc->small);
+	print_name("LARGE : ", g_truc->large);
+	total += print_block(g_truc->large);
+	ft_putstr("Total : ");
+	ft_putnbr(total);
+	ft_putstr(" octets\n");
+}
