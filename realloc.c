@@ -53,7 +53,7 @@ void	*realloc(void *ptr, size_t size)
 	if (ptr2 == NULL)
 		return (NULL);
 	i = -1;
-	while ((size_t)i < size)
+	while ((size_t)++i < size)
 		((char *)ptr2)[i] = ((char *)ptr)[i];
 	free(ptr);
 	return (ptr2);
