@@ -50,8 +50,8 @@ void	*realloc(void *ptr, size_t size)
 	if (verif_ptr(ptr) == 0)
 		return (NULL);
 	ptr2 = malloc(size);
-	if (ptr2 == NULL)
-		return (NULL);
+	// if (ptr2 == NULL)
+		// return (NULL);
 	i = -1;
 	while ((size_t)++i < size)
 		((char *)ptr2)[i] = ((char *)ptr)[i];
